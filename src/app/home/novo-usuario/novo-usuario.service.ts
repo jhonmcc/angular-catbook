@@ -7,9 +7,13 @@ import { Injectable } from '@angular/core';
 })
 export class NovoUsuarioService {
 
-  constructor(private httCliente: HttpClient) { }
+  constructor(private httpCliente: HttpClient) { }
 
   cadastrarNovoUsuario(novoUsuario: NovoUsuario) {
-    return this.httCliente.post("http://localhost:3000/user/signup", novoUsuario);
+    return this.httpCliente.post("http://localhost:3000/user/signup", novoUsuario);
+  }
+
+  verificarUsuarioExistente(novoUsuario: NovoUsuario){
+    return this.httpCliente.get('http://localhost:3000/user/exists/${nomeUsuario}');
   }
 }
