@@ -3,23 +3,23 @@ import { Injectable } from '@angular/core';
 const KEY = 'token';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TokenService {
-
-  retornaToken(){
+  retornaToken() {
     return localStorage.getItem(KEY) ?? '';
   }
 
-  salvarToken(token: string){
+  salvaToken(token: string) {
     localStorage.setItem(KEY, token);
   }
 
-  excluirToken(){
+  excluiToken() {
     localStorage.removeItem(KEY);
   }
 
-  possuiToken(){
-    return !! this.retornaToken();
+  possuiToken() {
+    return !!this.retornaToken();
   }
+  
 }
