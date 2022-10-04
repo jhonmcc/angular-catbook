@@ -19,35 +19,34 @@ export class AnimaisService {
     return this.http.get<Animais>(`${API}/${nomeDoUsuario}/photos`);
   }
 
-  buscarPorID(id: number): Observable<Animal>{
+  buscaPorID(id: number): Observable<Animal> {
     return this.http.get<Animal>(`${API}/photos/${id}`);
   }
 
-  excluirAnimal(id: number): Observable<Animal> {
+  excluiAnimal(id: number): Observable<Animal> {
     return this.http.delete<Animal>(`${API}/photos/${id}`);
   }
 
-  curtir(id: number): Observable<boolean>{
-    return this.http.post(`${API}/photos/${id}/like`, {}, { observe: 'response' })
-    .pipe(
-      mapTo(true),
-      catchError((error) => {
-        return error.status === NOT_MODIFIED ? of(false) : throwError(error);
-      })
-    )
+  curtir(id: number): Observable<boolean> {
+    return this.http
+      .post(`${API}/photos/${id}/like`, {}, { observe: 'response' })
+      .pipe(
+        mapTo(true),
+        catchError((error) => {
+          return error.status === NOT_MODIFIED ? of(false) : throwError(error);
+        })
+      );
   }
 
-  // listaDoUsuario(nomeDoUsuario: string): Observable<Animais> {
-  //   const token = this.tokenService.retornaToken();
-  //   const headers = new HttpHeaders().append('x-access-token', token);
-  //   return this.http.get<Animais>(`${API}/${nomeDoUsuario}/photos`, {
-  //     headers,
-  //   });
-  // }
+  upload(descricao: string, permiteComentario: boolean, arquivo: File) {
+    const formData = new FormData();
+    formData.append('description', descricao);
+    formData.append('allowComments', permiteComentario ? 'true' : 'false');
+    formData.append('imageFile', arquivo);
 
-  // buscarPorID(id: number): Observable<Animal>{
-  //   const token = this.tokenService.retornaToken();
-  //   const headers = new HttpHeaders().append('x-access-token', token);
-  //   return this.http.get<Animal>(`${API}/photos/${id}`, { headers });
-  // }
+    return this.http.post(`${API}/photos/upload`, formData, {
+      observe: 'events',
+      reportProgress: true,
+    });
+  }
 }
